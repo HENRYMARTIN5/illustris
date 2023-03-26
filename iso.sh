@@ -6,10 +6,10 @@ mkdir -p isodir
 mkdir -p isodir/boot
 mkdir -p isodir/boot/grub
 
-cp sysroot/boot/solus.kernel isodir/boot/solus.kernel
+cp sysroot/boot/illustris.kernel isodir/boot/illustris.kernel
 cat > isodir/boot/grub/grub.cfg << EOF
-menuentry "solus" {
-	multiboot /boot/solus.kernel
+menuentry "illustris" {
+	multiboot /boot/illustris.kernel
 }
 EOF
-grub-mkrescue -o solus.iso isodir
+grub-mkrescue -o illustris.iso isodir
