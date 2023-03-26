@@ -14,4 +14,8 @@ void kernel_main(void) {
 	printf("Creating task...");
 	int tid = task_create(pid, &test_task, NULL);
 	printf("done\n");
+	printf("Starting main loop...")
+	while (1) {
+		proc_tick();
+	}
 }

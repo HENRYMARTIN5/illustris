@@ -1,6 +1,3 @@
-#ifndef _KERNEL_PROC_H
-#define _KERNEL_PROC_H
-
 typedef struct _process process;
 typedef struct _task task;
 
@@ -12,8 +9,6 @@ int task_vaporize(int pid, int tid); // returns 0 on success, -1 on error
 
 void proc_tick();
 int proc_forcenext(int pid);
-
-#endif
 
 struct _process
 {
