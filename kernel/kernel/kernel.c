@@ -1,7 +1,16 @@
 #include <stdio.h>
 #include <kernel/tty.h>
 
+void test_task(void *arg) {
+	printf("Hello, world!");
+}
+
 void kernel_main(void) {
 	terminal_initialize();
-	printf("Hello, kernel World!\n");
+	printf("Creating root proc...");
+	int pid = proc_create();
+	printf("done\n");
+	printf("Creating task...");
+	int tid = task_create(pid, &test_task, NULL);
+	printf("done\n");
 }
