@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <proc.h>
 #include <kernel/tty.h>
 
 void test_task(void *arg) {
