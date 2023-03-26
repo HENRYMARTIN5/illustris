@@ -1,8 +1,6 @@
 #ifndef _KERNEL_PROC_H
 #define _KERNEL_PROC_H
 
-#include <kernel/thread.h>
-
 typedef struct _process process;
 typedef struct _task task;
 
