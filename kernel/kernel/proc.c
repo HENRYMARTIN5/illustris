@@ -8,6 +8,7 @@ process *proc_main = NULL;
 int proc_create()
 {
     process *new_proc = malloc(sizeof(process));
+    new_proc->storage = malloc(1024); // allocate 1 KiB of storage
     if (new_proc == NULL)
     {
         return -1;
@@ -52,7 +53,7 @@ int proc_vaporize(int pid)
     return -1;
 }
 
-int task_create(int pid, void (*func)(void *), void *arg)
+int task_create(int pid, void (*func)(void *))
 {
     process *proc = proc_main;
     while (proc != NULL)
@@ -66,7 +67,6 @@ int task_create(int pid, void (*func)(void *), void *arg)
             }
             new_task->tid = proc->current_tid + 1;
             new_task->func = func;
-            new_task->arg = arg;
             new_task->next = NULL;
             if (proc->tasks == NULL)
             {
@@ -150,9 +150,34 @@ void proc_tick()
         // We only want to execute the first task in the queue for each of the processes. 
         if (proc->tasks != NULL)
         {
-            proc->tasks->func(proc->tasks->arg);
+            proc->tasks->func();
             task_vaporize(proc->pid, proc->tasks->tid);
         }
         proc = proc->next;
     }
+}
+
+void *proc_get_storage(int pid)
+{
+    process *p = get_process(pid);
+    return p->storage;
+}
+
+void proc_set_storage(int pid, void *data, int size)
+{
+    process *p = get_process(pid);
+    memcpy(p->storage, data, size);
+}
+
+void proc_read_storage(int pid, void *data, int size)
+{
+    process *p = get_process(pid);
+    memcpy(data, p->storage, size);
+}
+
+void *proc_request_storage(int pid, int size)
+{
+    process *p = get_process(pid);
+    p->storage = realloc(p->storage, size);
+    return p->storage;
 }
