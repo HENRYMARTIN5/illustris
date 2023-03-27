@@ -8,6 +8,7 @@ process *proc_main = NULL;
 int proc_create()
 {
     process *new_proc = malloc(sizeof(process));
+    new_proc->storage = malloc(1024); // allocate 1 KiB of storage
     if (new_proc == NULL)
     {
         return -1;
@@ -154,4 +155,29 @@ void proc_tick()
         }
         proc = proc->next;
     }
+}
+
+void *proc_get_storage(int pid)
+{
+    process *p = get_process(pid);
+    return p->storage;
+}
+
+void proc_set_storage(int pid, void *data, int size)
+{
+    process *p = get_process(pid);
+    memcpy(p->storage, data, size);
+}
+
+void proc_read_storage(int pid, void *data, int size)
+{
+    process *p = get_process(pid);
+    memcpy(data, p->storage, size);
+}
+
+void *proc_request_storage(int pid, int size)
+{
+    process *p = get_process(pid);
+    p->storage = realloc(p->storage, size);
+    return p->storage;
 }
