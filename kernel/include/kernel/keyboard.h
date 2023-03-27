@@ -20,18 +20,18 @@ uint8_t get_next_key_code();
 #define KBD_NUM_LOCK    0x45
 #define KBD_SCROLL_LOCK 0x46
 
-#define KBD_F1  0x3B
-#define KBD_F2  0x3C
-#define KBD_F3  0x3D
-#define KBD_F4  0x3E
-#define KBD_F5  0x3F
-#define KBD_F6  0x40
-#define KBD_F7  0x41
-#define KBD_F8  0x42
-#define KBD_F9  0x43
-#define KBD_F10 0x44
-#define KBD_F11 0x57
-#define KBD_F12 0x58
+#define KBD_F1      0x3B
+#define KBD_F2      0x3C
+#define KBD_F3      0x3D
+#define KBD_F4      0x3E
+#define KBD_F5      0x3F
+#define KBD_F6      0x40
+#define KBD_F7      0x41
+#define KBD_F8      0x42
+#define KBD_F9      0x43
+#define KBD_F10     0x44
+#define KBD_F11     0x57
+#define KBD_F12     0x58
 
 /* ASCII characters */
 #define KBD_A       0x1E
