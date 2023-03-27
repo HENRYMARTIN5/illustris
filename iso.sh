@@ -8,7 +8,7 @@ mkdir -p isodir/boot/grub
 
 cp sysroot/boot/illustris.kernel isodir/boot/illustris.kernel
 cat > isodir/boot/grub/grub.cfg << EOF
-menuentry "illustris" {
+menuentry "Illustris OS" {
 	multiboot /boot/illustris.kernel
 }
 EOF
