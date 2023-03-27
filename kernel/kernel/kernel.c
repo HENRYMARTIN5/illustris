@@ -10,6 +10,9 @@ void test_task_2() {
 	printf("Hello, second process world!\n");
 }
 
+// Expected output:
+// Hello, second process world!
+// Hello, world!
 void kernel_main(void) {
 	terminal_initialize();
 	printf("Creating root proc...");
@@ -33,8 +36,5 @@ void kernel_main(void) {
 	printf("Starting main loop...\n");
 	while (1) {
 		proc_tick();
-		// Expected output:
-		// Hello, second process world!
-		// Hello, world!
 	}
 }
