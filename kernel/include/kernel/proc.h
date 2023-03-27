@@ -4,7 +4,7 @@ typedef struct _task task;
 int proc_create(); // Returns new pid, or -1 on error
 int proc_vaporize(int pid); // returns 0 on success, -1 on error
 
-int task_create(int pid, void (*func)(void *), void *arg); // Returns new tid, or -1 on error
+int task_create(int pid, void (*func)(void *)); // Returns new tid, or -1 on error
 int task_vaporize(int pid, int tid); // returns 0 on success, -1 on error
 
 void proc_tick();
@@ -24,6 +24,5 @@ struct _task
     // These are blocking and should be executed as quickly as possible.
     int tid;
     void (*func)(void *);
-    void *arg;
     task *next;
 };

@@ -52,7 +52,7 @@ int proc_vaporize(int pid)
     return -1;
 }
 
-int task_create(int pid, void (*func)(void *), void *arg)
+int task_create(int pid, void (*func)(void *))
 {
     process *proc = proc_main;
     while (proc != NULL)
@@ -66,7 +66,6 @@ int task_create(int pid, void (*func)(void *), void *arg)
             }
             new_task->tid = proc->current_tid + 1;
             new_task->func = func;
-            new_task->arg = arg;
             new_task->next = NULL;
             if (proc->tasks == NULL)
             {
@@ -150,7 +149,7 @@ void proc_tick()
         // We only want to execute the first task in the queue for each of the processes. 
         if (proc->tasks != NULL)
         {
-            proc->tasks->func(proc->tasks->arg);
+            proc->tasks->func();
             task_vaporize(proc->pid, proc->tasks->tid);
         }
         proc = proc->next;

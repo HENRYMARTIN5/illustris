@@ -5,7 +5,6 @@ echo "Cleaning \$HOME/src..."
 rm -Rf $HOME/src/*
 
 echo "Installing dependencies..."
-
 sudo apt install -y build-essential bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo
 
 export PREFIX="$HOME/opt/cross"
