@@ -27,7 +27,7 @@ void kernel_main(void) {
 	printf("done\n");
 	
 	printf("Forcenext-ing second proc...");
-	proc_forcenext(pid2);
+	proc_forcenext(pid2); // Note that running forcenext won't run the proc on the same proc_tick() that it's called from - it puts the process at the very front of the queue for next tick.
 	printf("done\n");
 	
 	printf("Starting main loop...\n");
