@@ -2,7 +2,7 @@
 #include <kernel/proc.h>
 #include <kernel/tty.h>
 
-void test_task(void *arg) {
+void test_task() {
 	printf("Hello, world!\n");
 }
 
