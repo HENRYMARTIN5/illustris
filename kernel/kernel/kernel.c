@@ -10,9 +10,6 @@ void test_task_2() {
 	printf("Hello, second process world!\n");
 }
 
-// Expected output:
-// Hello, second process world!
-// Hello, world!
 void kernel_main(void) {
 	terminal_initialize();
 	printf("Creating root proc...");
@@ -28,11 +25,7 @@ void kernel_main(void) {
 	printf("Creating task...");
 	int tid2 = task_create(pid2, &test_task_2);
 	printf("done\n");
-	
-	printf("Forcenext-ing second proc...");
-	proc_forcenext(pid2); // Note that running forcenext won't run the proc on the same proc_tick() that it's called from - it puts the process at the very front of the queue for next tick.
-	printf("done\n");
-	
+
 	printf("Starting main loop...\n");
 	while (1) {
 		proc_tick();

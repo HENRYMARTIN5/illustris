@@ -24,7 +24,7 @@ struct _process
     void *storage;
 };
 
-typedef struct _task {
+struct _task {
     int tid;
     void (*func)();
     task *next;
