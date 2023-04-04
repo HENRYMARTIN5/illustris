@@ -26,12 +26,14 @@ use vga::writers::{Graphics640x480x16, GraphicsWriter};
 #[no_mangle]
 pub fn kmain()
 {	
+	log!("Booted!");
 	let mode = Graphics640x480x16::new();
 	mode.set_mode();
 	mode.clear_screen(Color16::White);
 	for (offset, character) in "Hello World!".chars().enumerate() {
 		mode.draw_character(270 + offset * 8, 72, character, Color16::Black)
 	}
+	log!("Hopefully, text is shown on the screen! If not, then I am a failure and nobody loves me.");
 	loop {} // If we exit, the machine shuts down - we don't want that, so we loop forever
 }
 
