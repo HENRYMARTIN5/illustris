@@ -7,10 +7,10 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-echo "Just double-checking - you wanna build binutils for $1, right? [Y/n]"
+echo "Just double-checking - you wanna build binutils for $1, right? [y/n]"
 read -r answer
 
-if [ "$answer" != "Y" ]; then
+if [ "$answer" != "y" ]; then
     echo "Alright. Come back sometime, alright?"
     exit 1
 fi
@@ -19,7 +19,20 @@ echo "Cleaning \$HOME/src..."
 rm -Rf $HOME/src/*
 
 echo "Installing dependencies..."
-sudo apt install -y build-essential bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo
+
+if command -v apt &> /dev/null; then
+    sudo apt install -y build-essential bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo
+elif command -v pacman &> /dev/null; then
+    sudo pacman -S --noconfirm base-devel gmp libmpc mpfr
+elif command -v emerge &> /dev/null; then
+    sudo emerge --ask sys-devel/gcc sys-devel/make sys-devel/bison sys-devel/flex dev-libs/gmp dev-libs/mpc dev-libs/mpfr sys-apps/texinfo
+elif command -v dnf &> /dev/null; then
+    sudo dnf install gcc gcc-c++ make bison flex gmp-devel libmpc-devel mpfr-devel texinfo
+else
+    echo "Couldn't find a package manager. Please install the following packages:"
+    echo "build-essential (on Ubuntu - contains gcc, make, g++, etc.) bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo"
+    exit 1
+fi
 
 export PREFIX="$HOME/opt/cross"
 export TARGET=$1
