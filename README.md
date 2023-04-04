@@ -78,5 +78,5 @@ Keep in mind that you don't have to run `build.sh` before any of these scripts -
 
 - Original kernel design based on John Hodge (@thepowersgang)'s [Rust Barebones Kernel](https://github.com/thepowersgang/rust-barebones-kernel) repo
 - GNU grub configuration based on the [OSDev Wiki](https://wiki.osdev.org/GRUB_2#GRUB_2_Configuration)
-- Thanks to [Philipp Oppermann](https://os.phil-opp.com/) for his [blog series](https://os.phil-opp.com/) on writing an OS in Rust which was very helpful as a reference
+- Thanks to [Philipp Oppermann](https://os.phil-opp.com/) for his [blog series](https://os.phil-opp.com/) on writing an OS in Rust which was very helpful as a reference (and as a good place to steal code from)
 - And a final thanks for Terry A. Davis and his work on [TempleOS](https://templeos.org/) for inspiring me to start this whole project

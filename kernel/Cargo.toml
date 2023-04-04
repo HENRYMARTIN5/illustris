@@ -5,6 +5,3 @@ version = "0.0.0"
 [lib]
 path = "main.rs"
 crate-type = ["staticlib"]
-
-[dependencies]
-vga = "0.2.8"

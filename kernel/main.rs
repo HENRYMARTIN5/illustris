@@ -18,26 +18,14 @@ pub mod unwind;
 // Logging code
 mod logging;
 
-extern crate vga;
-use vga::colors::{Color16, TextModeColor};
-use vga::writers::{ScreenCharacter, TextWriter, Text80x25};
-
+// Vga buffer
+mod vga_buffer;
 
 // Kernel entrypoint (called by arch/<foo>/start.S)
 #[no_mangle]
 pub fn kmain()
 {	
-	log!("Initializing text mode...");
-	let text_mode = Text80x25::new();
-	let color = TextModeColor::new(Color16::Yellow, Color16::Black);
-	let screen_character = ScreenCharacter::new(b'T', color);
-	
-	log!("Setting text mode...");
-	text_mode.set_mode();
-
-	log!("Success!");
-	text_mode.clear_screen();
-	text_mode.write_character(0, 0, screen_character);
+    println!("Hello World!");
 	loop {} // If we exit, the machine shuts down - we don't want that, so we loop forever
 }
 
