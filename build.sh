@@ -1,7 +1,11 @@
-#!/bin/sh
-set -e
-. ./headers.sh
+#!/bin/bash
+
+PROJECTS="kernel"
+TARGET_TRIPLE="x86_64-elf"
 
 for PROJECT in $PROJECTS; do
-  (cd $PROJECT && DESTDIR="$SYSROOT" $MAKE install)
+    cd $PROJECT
+    make clean
+    TRIPLE=$TARGET_TRIPLE make
+    cd ..
 done
