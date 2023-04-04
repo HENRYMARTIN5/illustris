@@ -38,7 +38,19 @@ export PREFIX="$HOME/opt/cross"
 export TARGET=$1
 export PATH="$PREFIX/bin:$PATH"
 
-binutils_version=$(ld --version | head -n 1 | cut -d " " -f 7)
+# Check if the user is on Ubuntu
+if command -v apt &> /dev/null; then
+    # Check if the user is on Ubuntu 20.04
+    if [ "$(lsb_release -rs)" = "20.04" ]; then
+        binutils_version=$(ld --version | head -n 1 | cut -d " " -f 7) # Binutils version format is different as of Ubuntu 20.x
+    fi
+fi
+
+# If the user is not on Ubuntu 20.x, use the old format
+if [ -z "$binutils_version" ]; then
+    binutils_version=$(ld --version | head -n 1 | cut -d " " -f 5)
+fi
+
 binutils_url="https://sourceware.org/pub/binutils/releases/binutils-${binutils_version}.tar.xz"
 
 mkdir -p $HOME/src
