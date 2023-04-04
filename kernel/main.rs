@@ -18,6 +18,7 @@ pub mod unwind;
 // Logging code
 mod logging;
 
+extern crate vga;
 use vga::{Mode, FrameBuffer};
 
 // Kernel entrypoint (called by arch/<foo>/start.S)
