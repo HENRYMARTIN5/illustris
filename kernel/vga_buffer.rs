@@ -12,9 +12,9 @@ extern crate spin;
 extern crate volatile;
 
 use core::fmt;
-use lazy_static::lazy_static;
-use spin::Mutex;
-use volatile::Volatile;
+use self::lazy_static::lazy_static;
+use self::spin::Mutex;
+use self::volatile::Volatile;
 
 lazy_static! {
     /// A global `Writer` instance that can be used for printing to the VGA text buffer.
