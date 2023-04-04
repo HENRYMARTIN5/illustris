@@ -1,3 +1,9 @@
-*.iso
-isodir
-sysroot
+.*
+
+/kernel/target
+
+/*.dsm
+/*.bin
+/*.bin.elf64
+/*.tar.gz
+

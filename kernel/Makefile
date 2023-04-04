@@ -1,84 +1,71 @@
-DEFAULT_HOST!=../default-host.sh
-HOST?=DEFAULT_HOST
-HOSTARCH!=../target-triplet-to-arch.sh $(HOST)
 
-CFLAGS?=-O2 -g
-CPPFLAGS?=
-LDFLAGS?=
-LIBS?=
+# CONFIG: Architecture to build for
+ARCH ?= amd64
 
-DESTDIR?=
-PREFIX?=/usr/local
-EXEC_PREFIX?=$(PREFIX)
-BOOTDIR?=$(EXEC_PREFIX)/boot
-INCLUDEDIR?=$(PREFIX)/include
+ifeq ($(ARCH),amd64)
+    TRIPLE ?= x86_64-none-elf-
+else ifeq ($(ARCH),x86)
+    TRIPLE ?= i686-elf-
+else
+    $(error Unknown architecture $(ARCH))
+endif
 
-CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra
-CPPFLAGS:=$(CPPFLAGS) -D__is_kernel -Iinclude
-LDFLAGS:=$(LDFLAGS)
-LIBS:=$(LIBS) -nostdlib -lk -lgcc
 
-ARCHDIR=arch/$(HOSTARCH)
+# Toolchain commands (can be overridden)
+CARGO ?= cargo
+RUSTC ?= rustc
+LD := $(TRIPLE)ld
+AS := $(TRIPLE)as
+OBJDUMP := $(TRIPLE)objdump
+OBJCOPY := $(TRIPLE)objcopy
 
-include $(ARCHDIR)/make.config
+# Object directory
+OBJDIR := .obj/$(ARCH)/
 
-CFLAGS:=$(CFLAGS) $(KERNEL_ARCH_CFLAGS)
-CPPFLAGS:=$(CPPFLAGS) $(KERNEL_ARCH_CPPFLAGS)
-LDFLAGS:=$(LDFLAGS) $(KERNEL_ARCH_LDFLAGS)
-LIBS:=$(LIBS) $(KERNEL_ARCH_LIBS)
+LINKSCRIPT := arch/$(ARCH)/link.ld
+TARGETSPEC := arch/$(ARCH)/target.json
+# Compiler Options
+LINKFLAGS := -T $(LINKSCRIPT)
+LINKFLAGS += -Map $(OBJDIR)map.txt
+LINKFLAGS += --gc-sections
+LINKFLAGS += -z max-page-size=0x1000
 
-KERNEL_OBJS=\
-$(KERNEL_ARCH_OBJS) \
-kernel/kernel.o \
-kernel/proc.o \
+RUSTFLAGS := --cfg arch__$(ARCH) -C soft-float
+RUSTFLAGS += -C panic=abort
 
-OBJS=\
-$(ARCHDIR)/crti.o \
-$(ARCHDIR)/crtbegin.o \
-$(KERNEL_OBJS) \
-$(ARCHDIR)/crtend.o \
-$(ARCHDIR)/crtn.o \
+# Objects
+OBJS := start.o kernel.a
+OBJS := $(OBJS:%=$(OBJDIR)%)
+BIN := ../kernel.$(ARCH).bin
 
-LINK_LIST=\
-$(LDFLAGS) \
-$(ARCHDIR)/crti.o \
-$(ARCHDIR)/crtbegin.o \
-$(KERNEL_OBJS) \
-$(LIBS) \
-$(ARCHDIR)/crtend.o \
-$(ARCHDIR)/crtn.o \
+.PHONY: all clean PHONY
 
-.PHONY: all clean install install-headers install-kernel
-.SUFFIXES: .o .c .S
-
-all: illustris.kernel
-
-illustris.kernel: $(OBJS) $(ARCHDIR)/linker.ld
-	$(CC) -T $(ARCHDIR)/linker.ld -o $@ $(CFLAGS) $(LINK_LIST)
-	grub-file --is-x86-multiboot illustris.kernel
-
-$(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
-	OBJ=`$(CC) $(CFLAGS) $(LDFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
-
-.c.o:
-	$(CC) -MD -c $< -o $@ -std=gnu11 $(CFLAGS) $(CPPFLAGS)
-
-.S.o:
-	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
+all: $(BIN)
 
 clean:
-	rm -f illustris.kernel
-	rm -f $(OBJS) *.o */*.o */*/*.o
-	rm -f $(OBJS:.o=.d) *.d */*.d */*/*.d
+	$(RM) -rf $(BIN) $(BIN).dsm $(OBJDIR)
 
-install: install-headers install-kernel
+# Final link command
+$(BIN): $(OBJS) arch/$(ARCH)/link.ld
+	$(LD) -o $@ $(LINKFLAGS) $(OBJS)
+	$(OBJDUMP) -S $@ > $@.dsm
+ifeq ($(ARCH),amd64)
+	@mv $@ $@.elf64
+	@$(OBJCOPY) $@.elf64 -F elf32-i386 $@
+endif
 
-install-headers:
-	mkdir -p $(DESTDIR)$(INCLUDEDIR)
-	cp -R --preserve=timestamps include/. $(DESTDIR)$(INCLUDEDIR)/.
 
-install-kernel: illustris.kernel
-	mkdir -p $(DESTDIR)$(BOOTDIR)
-	cp illustris.kernel $(DESTDIR)$(BOOTDIR)
+# Compile rust kernel object
+$(OBJDIR)kernel.a: PHONY Makefile $(TARGETSPEC)
+	@mkdir -p $(dir $@)
+	RUSTFLAGS="$(RUSTFLAGS)" $(CARGO) build -Z build-std=core --target=$(TARGETSPEC) --release
+	@cp --preserve target/target/release/libkernel.a $@
 
--include $(OBJS:.o=.d)
+# Compile architecture's assembly stub
+$(OBJDIR)start.o: arch/$(ARCH)/start.S Makefile
+	@mkdir -p $(dir $@)
+	$(AS) $(ASFLAGS) -o $@ $<
+
+
+# Include dependency files
+-include $(OBJDIR)start.d

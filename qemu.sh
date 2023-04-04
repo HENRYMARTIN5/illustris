@@ -1,5 +1,5 @@
-#!/bin/sh
-set -e
-. ./iso.sh
+#!/bin/bash
 
-qemu-system-$(./target-triplet-to-arch.sh $HOST) -cdrom illustris.iso
+./build.sh
+
+qemu-system-x86_64 -kernel kernel.amd64.bin
