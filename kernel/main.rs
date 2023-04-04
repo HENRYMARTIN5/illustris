@@ -27,11 +27,15 @@ use vga::writers::{ScreenCharacter, TextWriter, Text80x25};
 #[no_mangle]
 pub fn kmain()
 {	
+	log!("Initializing text mode...");
 	let text_mode = Text80x25::new();
 	let color = TextModeColor::new(Color16::Yellow, Color16::Black);
 	let screen_character = ScreenCharacter::new(b'T', color);
 	
+	log!("Setting text mode...");
 	text_mode.set_mode();
+
+	log!("Success!");
 	text_mode.clear_screen();
 	text_mode.write_character(0, 0, screen_character);
 	loop {} // If we exit, the machine shuts down - we don't want that, so we loop forever
