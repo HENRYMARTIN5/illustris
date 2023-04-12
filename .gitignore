@@ -1,9 +1,4 @@
-.*
+/target
+**/*.rs.bk
 
-/kernel/target
-
-/*.dsm
-/*.bin
-/*.bin.elf64
-/*.tar.gz
-
+.vscode

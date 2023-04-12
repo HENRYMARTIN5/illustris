@@ -9,6 +9,7 @@ A hobby OS written in Rust. Currently in a very early stage of development.
 - Rust nightly toolchain (tested with `rustc 1.70.0-nightly (cf7ada217 2023-04-03)`)
 - The `rust-src` component installed
 - The `x86_64-unknown-none` target installed
+- `bootimage` installed through cargo
 - A working cross-compiler toolchain (technically only binutils is required, but a full toolchain is nice, just in case) for the `x86_64-elf` target
 
 If you don't have any of these (or if you're building in a fresh VM, which is what I reccomend), just follow along with the instructions below.
@@ -40,6 +41,14 @@ Install the `x86_64-unknown-none` target:
 
 ```bash
 rustup target add x86_64-unknown-none
+```
+
+#### `bootimage`
+
+Easy-peasy:
+
+```bash
+cargo install bootimage
 ```
 
 #### Cross-Compiling Binutils
@@ -77,6 +86,5 @@ Keep in mind that you don't have to run `build.sh` before any of these scripts -
 ## Credits
 
 - Original kernel design based on John Hodge (@thepowersgang)'s [Rust Barebones Kernel](https://github.com/thepowersgang/rust-barebones-kernel) repo
-- GNU grub configuration based on the [OSDev Wiki](https://wiki.osdev.org/GRUB_2#GRUB_2_Configuration)
 - Thanks to [Philipp Oppermann](https://os.phil-opp.com/) for his [blog series](https://os.phil-opp.com/) on writing an OS in Rust which was very helpful as a reference (and as a good place to steal code from)
 - And a final thanks for Terry A. Davis and his work on [TempleOS](https://templeos.org/) for inspiring me to start this whole project
