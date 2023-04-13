@@ -8,15 +8,15 @@ A hobby OS written in Rust. Currently in a very early stage of development.
 
 - Rust nightly toolchain (tested with `rustc 1.70.0-nightly (cf7ada217 2023-04-03)`)
 - The `rust-src` component installed
+- The `llvm-tools-preview` component installed
 - The `x86_64-unknown-none` target installed
 - `bootimage` installed through cargo
-- A working cross-compiler toolchain (technically only binutils is required, but a full toolchain is nice, just in case) for the `x86_64-elf` target
 
 If you don't have any of these (or if you're building in a fresh VM, which is what I reccomend), just follow along with the instructions below.
 
 #### Rustup
 
-Install rustup for your current distro. You can find instructions for your distro [here](https://rustup.rs/). Keep in mind that Windows is NOT SUPPORTED.
+Install rustup for your current distro. You can find instructions for your distro [here](https://rustup.rs/). Keep in mind that Windows is not officially supported, but *might* work.
 
 #### Rust Nightly
 
@@ -29,10 +29,11 @@ rustup default nightly-2023-04-03
 
 #### `rust-src`
 
-Install the `rust-src` component:
+Install the `rust-src` and `llvm-tools-preview` components:
 
 ```bash
 rustup component add rust-src
+rustup component add llvm-tools-preview
 ```
 
 #### Rust Target
@@ -49,14 +50,6 @@ Easy-peasy:
 
 ```bash
 cargo install bootimage
-```
-
-#### Cross-Compiling Binutils
-
-A script is included in this repo, based on the excellent instructions [here](https://wiki.osdev.org/GCC_Cross-Compiler#Building_GCC), to build a cross-compiler toolchain for the `x86_64-elf` target. To use it, just run:
-
-```bash
-./binutils-cross.sh x86_64-elf
 ```
 
 ### Actually Building

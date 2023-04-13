@@ -2,4 +2,4 @@
 
 ./build.sh
 
-qemu-system-x86_64 -kernel kernel.amd64.bin -serial stdio
+qemu-system-x86_64 -drive format=raw,file=output/kernel/kernel.bin
