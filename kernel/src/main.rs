@@ -3,7 +3,7 @@
 
 extern crate alloc;
 
-use illustris::println;
+use illustris::{print, println};
 use illustris::task::{executor::Executor, keyboard, Task};
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
