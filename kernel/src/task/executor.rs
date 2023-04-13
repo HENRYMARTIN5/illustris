@@ -18,12 +18,12 @@ impl Executor {
         }
     }
 
-    pub fn spawn(&mut self, task: Task) {
-        let task_id = task.id;
-        if self.tasks.insert(task.id, task).is_some() {
-            panic!("task with same ID already in tasks");
+    pub fn summon(&mut self, task: Task) {
+        let task_id = task.tid;
+        if self.tasks.insert(task.tid, task).is_some() {
+            panic!("TID {} already in tasks!", task_id);
         }
-        self.task_queue.push(task_id).expect("queue full");
+        self.task_queue.push(task_id).expect("Kernel task queue is full!");
     }
 
     pub fn run(&mut self) -> ! {
@@ -87,7 +87,7 @@ impl TaskWaker {
     }
 
     fn wake_task(&self) {
-        self.task_queue.push(self.task_id).expect("task_queue full");
+        self.task_queue.push(self.task_id).expect("Cannot wake task: kernel task queue full.");
     }
 }
 

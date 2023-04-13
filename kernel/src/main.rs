@@ -42,7 +42,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 /// This function is called on panic.
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    println!("{}", info);
+    println!("Hello there, unsuspecting user! It seems that you have encountered a kernel panic! If this panic persists, open an issue on the Github repo. For now, though, here's your error message:\n{}", info);
     illustris::hlt_loop();
 }
 

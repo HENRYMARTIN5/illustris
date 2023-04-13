@@ -13,7 +13,7 @@ impl SimpleExecutor {
         }
     }
 
-    pub fn spawn(&mut self, task: Task) {
+    pub fn summon(&mut self, task: Task) {
         self.task_queue.push_back(task)
     }
 

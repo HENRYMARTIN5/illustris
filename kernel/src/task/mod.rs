@@ -11,14 +11,14 @@ pub mod keyboard;
 pub mod simple_executor;
 
 pub struct Task {
-    id: TaskId,
+    tid: TaskId,
     future: Pin<Box<dyn Future<Output = ()>>>,
 }
 
 impl Task {
     pub fn new(future: impl Future<Output = ()> + 'static) -> Task {
         Task {
-            id: TaskId::new(),
+            tid: TaskId::new(),
             future: Box::pin(future),
         }
     }
