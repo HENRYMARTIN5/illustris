@@ -82,10 +82,10 @@ pub async fn print_keypresses() {
     }
 }
 
-pub async fn get_input() -> String {
+pub async fn get_input() -> &str {
     let mut scancodes = ScancodeStream::new();
     let mut keyboard = Keyboard::new(layouts::Us104Key, ScancodeSet1, HandleControl::Ignore);
-    let mut input = String::new();
+    let mut input = "";
     loop {
         if let Some(scancode) = scancodes.next().await {
             if let Ok(Some(key_event)) = keyboard.add_byte(scancode) {
