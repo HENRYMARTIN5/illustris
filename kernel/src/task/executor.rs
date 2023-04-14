@@ -21,7 +21,7 @@ impl Executor {
     pub fn summon(&mut self, task: Task) {
         let task_id = task.tid;
         if self.tasks.insert(task.tid, task).is_some() {
-            panic!("TID {} already in tasks!", task_id);
+            panic!("TID already in tasks!");
         }
         self.task_queue.push(task_id).expect("Kernel task queue is full!");
     }
