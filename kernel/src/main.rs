@@ -34,8 +34,8 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     let mut executor = Executor::new();
     println!("done.");
 
-    println!("Spawning keyboard task...");
-    executor.spawn(Task::new(keyboard::print_keypresses()));
+    println!("Summoning keyboard task...");
+    executor.summon(Task::new(keyboard::print_keypresses()));
     executor.run();
 }
 
