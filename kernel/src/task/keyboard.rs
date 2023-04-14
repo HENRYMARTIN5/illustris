@@ -82,27 +82,33 @@ pub async fn print_keypresses() {
     }
 }
 
-pub async fn get_input() -> &str {
+pub async fn get_input() -> &'static str {
+    static mut BUFFER: [u8; 256] = [0; 256];
     let mut scancodes = ScancodeStream::new();
     let mut keyboard = Keyboard::new(layouts::Us104Key, ScancodeSet1, HandleControl::Ignore);
-    let mut input = "";
+
+    let mut input_idx = 0;
     loop {
         if let Some(scancode) = scancodes.next().await {
             if let Ok(Some(key_event)) = keyboard.add_byte(scancode) {
-                if let Some(decoded) = keyboard.process_keyevent(key_event) {
-                    match decoded {
+                if let Some(key) = keyboard.process_keyevent(key_event) {
+                    match key {
+                        DecodedKey::Unicode('\n') => break,
                         DecodedKey::Unicode(character) => {
                             print!("{}", character);
-                            input.push(character);
-                        },
-                        DecodedKey::RawKey(raw_key) => {
-                            if raw_key == pc_keyboard::KeyCode::Enter {
-                                return input;
+                            unsafe {
+                                BUFFER[input_idx] = character as u8;
                             }
+                            input_idx += 1;
                         },
+                        _ => {},
                     }
                 }
             }
         }
+    }
+    unsafe {
+        let input_slice = str::from_utf8_unchecked(&BUFFER[..input_idx]);
+        input_slice
     }
 }
