@@ -1,10 +1,10 @@
 [package]
 name = "illustris"
 version = "0.1.0"
-authors = ["Philipp Oppermann <dev@phil-opp.com>"]
 edition = "2018"
 
 [dependencies]
+fatfs = { version = "0.4", default-features = false }
 bootloader = { version = "0.9.8", features = ["map_physical_memory"]}
 volatile = "0.2.6"
 spin = "0.5.2"

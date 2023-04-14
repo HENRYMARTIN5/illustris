@@ -75,11 +75,34 @@ pub async fn print_keypresses() {
             if let Some(key) = keyboard.process_keyevent(key_event) {
                 match key {
                     DecodedKey::Unicode(character) => print!("{}", character),
-                    // DecodedKey::RawKey(key) => print!("{:?}", key),
+                    DecodedKey::RawKey(key) => print!("{:?}", key),
                 }
             }
         }
     }
 }
 
-// "Read until" function
+pub async fn get_input() -> String {
+    let mut scancodes = ScancodeStream::new();
+    let mut keyboard = Keyboard::new(layouts::Us104Key, ScancodeSet1, HandleControl::Ignore);
+    let mut input = String::new();
+    loop {
+        if let Some(scancode) = scancodes.next().await {
+            if let Ok(Some(key_event)) = keyboard.add_byte(scancode) {
+                if let Some(decoded) = keyboard.process_keyevent(key_event) {
+                    match decoded {
+                        DecodedKey::Unicode(character) => {
+                            print!("{}", character);
+                            input.push(character);
+                        },
+                        DecodedKey::RawKey(raw_key) => {
+                            if raw_key == pc_keyboard::KeyCode::Enter {
+                                return input;
+                            }
+                        },
+                    }
+                }
+            }
+        }
+    }
+}
