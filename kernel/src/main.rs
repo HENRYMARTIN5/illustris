@@ -34,8 +34,8 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     let mut executor = Executor::new();
     println!("done.");
 
-    println!("Summoning keyboard task...");
-    executor.summon(Task::new(keyboard::print_keypresses()));
+    println!("Summoning test task...");
+    executor.summon(Task::new(hello_world_test()));
     executor.run();
 }
 
@@ -44,6 +44,13 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 fn panic(info: &PanicInfo) -> ! {
     println!("Hello there, unsuspecting user! It seems that you have encountered a kernel panic! If this panic persists, open an issue on the Github repo. For now, though, here's your error message:\n{}", info);
     illustris::hlt_loop();
+}
+
+async fn hello_world_test() {
+    println!("Hello, world!");
+    print!("What is your name? ");
+    let name = keyboard::get_input().await;
+    println!("Hello, {}!", name);
 }
 
 // async fn async_number() -> u32 {
