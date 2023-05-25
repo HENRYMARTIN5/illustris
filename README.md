@@ -1,4 +1,17 @@
-# Illustris
+```
+
+                                                                        
+88  88  88                                               88             
+88  88  88                            ,d                 ""             
+88  88  88                            88                                
+88  88  88  88       88  ,adPPYba,  MM88MMM  8b,dPPYba,  88  ,adPPYba,  
+88  88  88  88       88  I8[    ""    88     88P'   "Y8  88  I8[    ""  
+88  88  88  88       88   `"Y8ba,     88     88          88   `"Y8ba,   
+88  88  88  "8a,   ,a88  aa    ]8I    88,    88          88  aa    ]8I  
+88  88  88   `"YbbdP'Y8  `"YbbdP"'    "Y888  88          88  `"YbbdP"'  
+                                                                        
+                                                                        
+```
 
 A hobby OS written in Rust. Currently in a very early stage of development.
 
